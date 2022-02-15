@@ -561,14 +561,14 @@ Ensure the default browser behavior of the `hidden` attribute.
  .mt-12 {
   margin-top: 3rem;
 }
- .mr-8 {
-  margin-right: 2rem;
-}
  .mt-1 {
   margin-top: 0.25rem;
 }
  .mt-5 {
   margin-top: 1.25rem;
+}
+ .mr-8 {
+  margin-right: 2rem;
 }
  .ml-10 {
   margin-left: 2.5rem;
@@ -856,6 +856,10 @@ Ensure the default browser behavior of the `hidden` attribute.
  .text-2xl {
   font-size: 1.5rem;
   line-height: 2rem;
+}
+ .text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
 }
  .font-medium {
   font-weight: 500;

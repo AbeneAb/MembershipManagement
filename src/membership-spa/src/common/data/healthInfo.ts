@@ -13,7 +13,7 @@ export interface IHelathInfoType {
 	heartRate: number;
 	systolic: number;
 	diastolic: number;
-	time: string;
+	time: Date;
 }
 export interface HealthInfoReturn {
 	loading: boolean;
