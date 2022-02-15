@@ -1,0 +1,30 @@
+version: '3.4'
+
+services:
+
+  memberDb:
+    container_name: memberDb
+    environment:
+       SA_PASSWORD: "Thynk1234"
+       ACCEPT_EULA: "Y"
+    restart: always
+    ports:
+      - "5433:1433" 
+
+  membership.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+    ports:
+      - "8000:80"
+      - "7258:443"
+    depends_on:
+      - memberDb
+    
+
+volumes:
+  member-sqldata:
+    external: false
+networks:
+  member-network:
+    name: member-network

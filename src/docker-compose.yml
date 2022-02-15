@@ -1,0 +1,12 @@
+version: '3.4'
+
+services:
+
+  memberDb:
+    image: mcr.microsoft.com/mssql/server:2017-latest
+
+  membership.api:
+    image: ${DOCKER_REGISTRY-}membershipapi
+    build:
+      context: .
+      dockerfile: API/Membership/Membership.API/Dockerfile
