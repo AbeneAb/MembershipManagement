@@ -13,4 +13,6 @@ global using System.Text.Json.Serialization;
 global using Membership.API.Infrastrucuture.Repository;
 global using Membership.API;
 global using Membership.API.Extenstion;
-
+global using RabbitMQEventbus;
+global using RabbitMQEventbus.IntegrationEvents.Events;
+global using RabbitMQEventbus.Abstractions;

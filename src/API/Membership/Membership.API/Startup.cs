@@ -14,6 +14,7 @@
             services.AddControllers(option =>
             {
                 option.Filters.Add(typeof(HttpGlobalExceptionFilter));
+                option.Filters.Add(typeof(ValidateModelStateFilter));
             })
                 .AddJsonOptions(options => options.JsonSerializerOptions.WriteIndented = true)
             .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);

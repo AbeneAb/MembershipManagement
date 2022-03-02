@@ -15,7 +15,7 @@ import React, { Fragment } from 'react';
 const navigation = [
 	{ name: 'Members', href: '/', current: true, icon: SearchIcon },
 	{ name: 'Transactions', href: '/transactions', current: false, icon: BookOpenIcon },
-	{ name: 'Heart Beat', href: '/healthData', current: false, icon: HeartIcon },
+	{ name: 'Health Info', href: '/healthData', current: false, icon: HeartIcon },
 	{ name: 'Help Center', href: '#', current: false, icon: ChatIcon },
 ];
 

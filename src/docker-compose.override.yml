@@ -15,11 +15,25 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
+      - "ConnectionStrings:MembershipConnectionString=Server=memberDb;Port=5433;Database=memberDb;User Id=sa;Password=Thynk1234;TrustServerCertificate=True"
+      - "RabbitMq:Hostname=rabbitmq"
+      - "RabbitMq:QueueName=SelectionQueue"
+      - "RabbitMq:UserName=guest"
+      - "RabbitMq:Password=guest"
+      - "RabbitMq:Port=5672"
     ports:
       - "8000:80"
       - "7258:443"
     depends_on:
       - memberDb
+      - rabbitmq
+
+  rabbitmq:
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "15670:5672"
+      - "15672:15672"
     
 
 volumes:
