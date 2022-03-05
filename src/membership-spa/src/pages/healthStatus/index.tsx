@@ -1,5 +1,6 @@
+/* eslint-disable sonarjs/no-duplicate-string */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
 	Chart as ChartJS,
 	CategoryScale,
@@ -9,10 +10,13 @@ import {
 	Title,
 	Tooltip,
 	Legend,
+
 } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-
+import { HubConnection, HubConnectionBuilder } from '@microsoft/signalr'
 import { useHealthInfoHook } from './useHealthStatus';
+import { IHelathInfoType } from '../../common/data/healthInfo';
+
 
 ChartJS.register(
 	CategoryScale,
@@ -23,6 +27,7 @@ ChartJS.register(
 	Tooltip,
 	Legend,
 );
+
 
 const HealthDashboard: React.FunctionComponent = () => {
 	const pulseOptions = {
@@ -37,6 +42,9 @@ const HealthDashboard: React.FunctionComponent = () => {
 			},
 		},
 	};
+
+
+
 	const bloodPressureOptions = {
 		responsive: true,
 		plugins: {
@@ -49,11 +57,45 @@ const HealthDashboard: React.FunctionComponent = () => {
 			},
 		},
 	};
-	const { data } = useHealthInfoHook();
-	const time = data?.map(u => u.time);
-	const systolic = data?.map(u => u.systolic);
-	const diastolic = data?.map(u => u.diastolic);
+	const { iData } = useHealthInfoHook();
+	const [data, setData] = useState<IHelathInfoType[] | null>(null);
+	const [time, setTime] = useState<Date[] | undefined>();
+	const [systolic, setSystolic] = useState<number[] | null>(null);
+	const [diastolic, setDiastolic] = useState<number[] | null>(null);
+	useEffect(() => {
+		setData(iData);
+		if (iData && iData !== null) {
+			setTime(iData.map(u => u.time));
+			setSystolic(iData.map(u => u.systolic));
+			setDiastolic(iData.map(u => u.diastolic));
+		}
 
+	}, [iData])
+
+	const [, setConnection] = useState<HubConnection>();
+
+	function OnNewPulseData(newPulseData: any): void {
+		 const healthInfo = { systolic: newPulseData.Systolic,heartRate: newPulseData.Pulse,diastolic: newPulseData.Diastolic,time:newPulseData.Time} as IHelathInfoType
+		
+		setData(oldata => [...(oldata === null ? [] : oldata), healthInfo]);
+	}
+	useEffect(() => {
+		setTimeout(() => {
+			console.log(process.env.SIGNALR_ENDPOINT!);
+			const newConnection = new HubConnectionBuilder().withUrl(process.env.REACT_APP_SIGNALR_ENDPOINT!, {
+				accessTokenFactory: () => "EEAEAB69-3D3E-4AB9-8B98-FEBC038A94A7"
+			})
+				.withAutomaticReconnect().build();
+			if (newConnection) {
+				newConnection.start();
+				newConnection.on('newpulsedata', newPulseData => {
+					OnNewPulseData(JSON.parse(newPulseData) as IHelathInfoType);
+				})
+				setConnection(newConnection);
+			}
+		}, 100)
+
+	}, []);
 	const chartData = {
 		labels: time,
 		datasets: [
@@ -71,8 +113,9 @@ const HealthDashboard: React.FunctionComponent = () => {
 			},
 		],
 	};
+	const [bpChartData, setBPChartData] = useState(chartData);
 
-	const heartBeatChartData = {
+	const [heartBeatChartData, setheartBeatChartData] = useState<any>({
 		labels: time,
 		datasets: [
 			{
@@ -82,7 +125,49 @@ const HealthDashboard: React.FunctionComponent = () => {
 				backgroundColor: 'rgba(255, 99, 132, 0.5)',
 			},
 		],
-	};
+	});
+
+
+	useEffect(() => {
+		if (data && data !== null) {
+			setBPChartData({
+				labels: data?.map(d => d.time),
+				datasets: [
+					{
+						label: 'Systolic',
+						data: data.map(d => d.systolic),
+						borderColor: 'rgb(255, 99, 132)',
+						backgroundColor: 'rgba(255, 99, 132, 0.5)',
+					},
+					{
+						label: 'Diastolic',
+						data: data.map(d => d.diastolic),
+						borderColor: 'rgb(53, 162, 235)',
+						backgroundColor: 'rgba(53, 162, 235, 0.5)',
+					},
+				],
+			})
+		}
+
+	}, [data])
+
+	useEffect(() => {
+		setheartBeatChartData({
+			labels: data?.map(d => d.time),
+			datasets: [
+				{
+					label: 'Pulse',
+					data: data?.map(d => d.heartRate),
+					borderColor: 'rgb(255, 99, 132)',
+					backgroundColor: 'rgba(255, 99, 132, 0.5)',
+				},
+			],
+		});
+
+
+	}, [data])
+
+
 
 	return (
 		<div className="w-full min-h-screen mb-10">
@@ -94,7 +179,7 @@ const HealthDashboard: React.FunctionComponent = () => {
 						Welcome.
 					</p>
 					<h2 className="text-sm font-medium leading-6 text-gray-900">
-						Here are your transactions.
+						Here are your Live Health Data Information.
 					</h2>
 				</div>
 				<div>
@@ -113,7 +198,7 @@ const HealthDashboard: React.FunctionComponent = () => {
 						</div>
 						<div className="mt-5 md:mt-0 md:col-span-2">
 							<div className="px-4 py-5 space-y-6 bg-white shadow sm:rounded-md sm:overflow-hidden sm:p-6">
-								<Line options={bloodPressureOptions} data={chartData} />
+								<Line options={bloodPressureOptions} data={bpChartData} />
 							</div>
 						</div>
 					</div>

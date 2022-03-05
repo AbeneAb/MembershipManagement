@@ -39,6 +39,15 @@ services:
     depends_on:
       - rabbitmq
 
+  membership-spa:
+    volumes:
+      -'.:/app'
+      - 'app/node_modules'
+    depends_on:
+      - membership.api
+
+
+
   rabbitmq:
     container_name: rabbitmq
     restart: always

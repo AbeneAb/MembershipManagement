@@ -11,5 +11,5 @@ export const useHealthInfoHook = () => {
 	useEffect(() => {
 		execute();
 	}, []);
-	return { data, error, loading, classNames };
+	return { iData:data, error, loading, classNames };
 };

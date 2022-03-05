@@ -19,7 +19,7 @@ public class NewPulseDataHandler : IIntegrationEventHandler<NewPulseDataPosted>
         {
             _logger.LogInformation("Handling integration event : {EventId} - {IntegrationEvent}", @event.Id, @event);
             await _healthRepository.CreateHealthData(new HealthInformation(@event.Pulse, @event.Systolic, @event.Diastolic, @event.Time, @event.DeviceId));
-            await _hubContext.Clients.Client("").SendAsync("newpulsedata", JsonSerializer.Serialize(@event));
+            await _hubContext.Clients.Group("HEALTH_DATA").SendAsync("newpulsedata", JsonSerializer.Serialize(@event));
             _logger.LogInformation("Create Health Data suceeded - RequestId: {RequestId}", @event.Id);
         }
         else
