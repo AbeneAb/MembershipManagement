@@ -18,3 +18,8 @@ global using RabbitMQEventbus.IntegrationEvents.Events;
 global using RabbitMQEventbus.Abstractions;
 global using Membership.API.Handlers;
 global using RabbitMQEventbus.RabbitMQ;
+global using Microsoft.AspNetCore.SignalR;
+global using Autofac;
+global using Autofac.Extensions.DependencyInjection;
+global using Membership.API.Notification;
+global using RabbitMQ.Client;
