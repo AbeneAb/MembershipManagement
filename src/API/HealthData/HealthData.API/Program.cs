@@ -1,4 +1,6 @@
 
+using Microsoft.AspNetCore;
+
 var configuration = GetConfiguration();
 var builder = WebApplication.CreateBuilder(args);
 Log.Logger = CreateSerilogLogger(configuration);
@@ -7,7 +9,7 @@ Log.Logger = CreateSerilogLogger(configuration);
 try
 {
     Log.Information("Configuring web host ...");
-    var host = CreateHostBuilder(args).Build();
+    var host = BuildWebHost(configuration, args);
     //Log.Information("Applying migrations ...");
     //host?.MigrateDatabase<MembershipContext>((context, services) =>
     //{
@@ -29,12 +31,14 @@ finally
     Log.CloseAndFlush();
 }
 
-IHostBuilder CreateHostBuilder(string[] args) =>
-           Host.CreateDefaultBuilder(args)
-               .ConfigureWebHostDefaults(webBuilder =>
-               {
-                   webBuilder.UseStartup<Startup>();
-               });
+IWebHost BuildWebHost(IConfiguration configuration, string[] args) =>
+    WebHost.CreateDefaultBuilder(args)
+        .CaptureStartupErrors(false)
+        .ConfigureAppConfiguration(x => x.AddConfiguration(configuration))
+        .UseStartup<Startup>()
+        .UseContentRoot(Directory.GetCurrentDirectory())
+        .UseSerilog()
+        .Build();
 IConfiguration GetConfiguration()
 {
     var builder = new ConfigurationBuilder().

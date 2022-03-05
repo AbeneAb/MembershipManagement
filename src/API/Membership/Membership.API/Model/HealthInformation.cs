@@ -12,7 +12,8 @@
         {
             Id = Guid.NewGuid();
         }
-        public HealthInformation(uint heartRate, uint systolic, uint diastolic,DateTime time, string deviceId) :base()
+        public HealthInformation(uint heartRate, uint systolic, uint diastolic,DateTime time, string deviceId) :this
+            ()
         {
             HeartRate = heartRate;
             Systolic = systolic;

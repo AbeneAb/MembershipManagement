@@ -17,15 +17,30 @@ services:
       - ASPNETCORE_URLS=https://+:443;http://+:80
       - "ConnectionStrings:MembershipConnectionString=Server=memberDb;Port=5433;Database=memberDb;User Id=sa;Password=Thynk1234;TrustServerCertificate=True"
       - "RabbitMq:Hostname=rabbitmq"
-      - "RabbitMq:QueueName=SelectionQueue"
       - "RabbitMq:UserName=guest"
       - "RabbitMq:Password=guest"
-      - "RabbitMq:Port=5672"
+      - "RabbitMq:Port=15670"
+      - "RabbitMq:SubscriptionClientName=HealthData.API"
     ports:
       - "8000:80"
       - "7258:443"
     depends_on:
       - memberDb
+      - rabbitmq
+
+  healthdata.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - "RabbitMq:Hostname=rabbitmq"
+      - "RabbitMq:UserName=guest"
+      - "RabbitMq:Password=guest"
+      - "RabbitMq:Port=15670"
+      - "RabbitMq:SubscriptionClientName=HealthData.API"
+    ports:
+      - "8001:80"
+      - "7259:443"
+    depends_on:
       - rabbitmq
 
   rabbitmq:

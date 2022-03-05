@@ -7,3 +7,4 @@ global using System.Net.Sockets;
 global using System.Text;
 global using RabbitMQ.Client.Exceptions;
 global using System.Text.Json;
+global using Autofac;

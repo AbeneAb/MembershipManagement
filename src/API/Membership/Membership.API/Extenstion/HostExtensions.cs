@@ -4,7 +4,7 @@ namespace Membership.API.Extenstion
 {
     public static class HostExtensions
     {
-        public static IHost MigrateDatabase<TContext>(this IHost host, Action<TContext, IServiceProvider> seeder, int? retry = 0) where TContext : DbContext 
+        public static IWebHost MigrateDatabase<TContext>(this IWebHost host, Action<TContext, IServiceProvider> seeder, int? retry = 0) where TContext : DbContext 
         {
             int retryForAvailability = retry.Value;
             using (var scope = host.Services.CreateScope())

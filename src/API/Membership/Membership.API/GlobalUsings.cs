@@ -16,3 +16,5 @@ global using Membership.API.Extenstion;
 global using RabbitMQEventbus;
 global using RabbitMQEventbus.IntegrationEvents.Events;
 global using RabbitMQEventbus.Abstractions;
+global using Membership.API.Handlers;
+global using RabbitMQEventbus.RabbitMQ;

@@ -58,22 +58,22 @@
         public static IEnumerable<HealthInformation> SeedHealthInformation() 
         {
             var members = new List<HealthInformation>();
-            members.Add(new HealthInformation() { Diastolic = 80, Systolic = 120, HeartRate = 74, Time = new DateTime(2021, 9, 10) });
-            members.Add(new HealthInformation() { Diastolic = 90, Systolic = 130, HeartRate = 68, Time = new DateTime(2022, 1, 10) });
-            members.Add(new HealthInformation() { Diastolic = 80, Systolic = 110, HeartRate = 60, Time = new DateTime(2021, 12, 10) });
-            members.Add(new HealthInformation() { Diastolic = 80, Systolic = 130, HeartRate = 37, Time = new DateTime(2022, 2, 10) });
+            members.Add(new HealthInformation() { DeviceId ="Device 1", Diastolic = 80, Systolic = 120, HeartRate = 74, Time = new DateTime(2021, 9, 10) });
+            members.Add(new HealthInformation() { DeviceId = "Device 2", Diastolic = 90, Systolic = 130, HeartRate = 68, Time = new DateTime(2022, 1, 10) });
+            members.Add(new HealthInformation() { DeviceId = "Device ", Diastolic = 80, Systolic = 110, HeartRate = 60, Time = new DateTime(2021, 12, 10) });
+            members.Add(new HealthInformation() { DeviceId = "Device 4", Diastolic = 80, Systolic = 130, HeartRate = 37, Time = new DateTime(2022, 2, 10) });
 
-            members.Add(new HealthInformation() { Diastolic = 90, Systolic = 140, HeartRate = 49, Time = new DateTime(2021, 8, 10) });
+            members.Add(new HealthInformation() { DeviceId = "Device 5", Diastolic = 90, Systolic = 140, HeartRate = 49, Time = new DateTime(2021, 8, 10) });
 
-            members.Add(new HealthInformation() { Diastolic = 70, Systolic = 110, HeartRate = 110, Time = new DateTime(2022, 2, 10) });
+            members.Add(new HealthInformation() { DeviceId = "Device 1", Diastolic = 70, Systolic = 110, HeartRate = 110, Time = new DateTime(2022, 2, 10) });
 
-            members.Add(new HealthInformation() { Diastolic = 100, Systolic = 190, HeartRate = 70, Time = new DateTime(2022, 1, 12) });
+            members.Add(new HealthInformation() { DeviceId = "Device 6", Diastolic = 100, Systolic = 190, HeartRate = 70, Time = new DateTime(2022, 1, 12) });
 
-            members.Add(new HealthInformation() { Diastolic = 96, Systolic = 120, HeartRate = 90, Time = new DateTime(2022,1 , 28) });
+            members.Add(new HealthInformation() { DeviceId = "Device 7", Diastolic = 96, Systolic = 120, HeartRate = 90, Time = new DateTime(2022,1 , 28) });
 
-            members.Add(new HealthInformation() { Diastolic = 88, Systolic = 142, HeartRate = 53, Time = new DateTime(2021, 12, 10) });
+            members.Add(new HealthInformation() { DeviceId = "Device 8", Diastolic = 88, Systolic = 142, HeartRate = 53, Time = new DateTime(2021, 12, 10) });
 
-            members.Add(new HealthInformation() { Diastolic = 100, Systolic = 140, HeartRate = 45, Time = new DateTime(2021,11, 19) });
+            members.Add(new HealthInformation() { DeviceId = "Device 9", Diastolic = 100, Systolic = 140, HeartRate = 45, Time = new DateTime(2021,11, 19) });
             return members;
 
         }

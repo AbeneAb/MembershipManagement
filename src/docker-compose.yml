@@ -10,6 +10,12 @@ services:
     build:
       context: .
       dockerfile: API/Membership/Membership.API/Dockerfile
+  
+  healthdata.api:
+    image: ${DOCKER_REGISTRY-}healthdataapi
+    build:
+        context: .
+        dockerfile: API/HealthData/HealthData.API/Dockerfile
 
   rabbitmq:
     image: rabbitmq:3-management-alpine

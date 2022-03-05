@@ -1,4 +1,7 @@
-﻿namespace HealthData.API;
+﻿using Autofac;
+using Autofac.Extensions.DependencyInjection;
+
+namespace HealthData.API;
 
 public class Startup
 {
@@ -7,7 +10,7 @@ public class Startup
     {
         _configuration = configuration;
     }
-    public void ConfigureServices(IServiceCollection services) 
+    public virtual IServiceProvider ConfigureServices(IServiceCollection services) 
     {
         services.AddControllers(options =>
         {
@@ -33,21 +36,26 @@ public class Startup
                 .AllowCredentials());
         });
 
-        RegsiterEventBus(services);
 
         services.AddSingleton<IRabbitMQPersistentConnection>(s => {
             var logger = s.GetRequiredService<ILogger<RabbitMQPersistentConnection>>();
             var factory = new ConnectionFactory()
             {
-                HostName = _configuration["Rabbitmq:Hostname"],
+                HostName = _configuration["RabbitMq:Hostname"],
                 DispatchConsumersAsync = true,
-                UserName = _configuration["Rabbitmq:UserName"],
-                Password = _configuration["Rabbitmq:Password"],
-                Port = int.Parse(_configuration["Port"])
+                UserName = _configuration["RabbitMq:UserName"],
+                Password = _configuration["RabbitMq:Password"],
+                Port = int.Parse(_configuration["RabbitMq:Port"])
             };
             var retryCount = 5;
             return new RabbitMQPersistentConnection(factory, logger, retryCount);
         });
+        RegsiterEventBus(services);
+
+        services.AddHostedService<HealthDataMockService>();
+        var container = new ContainerBuilder();
+        container.Populate(services);
+        return new AutofacServiceProvider(container.Build());
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env) 
@@ -59,7 +67,7 @@ public class Startup
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Health API"));
         }
-
+       
         app.UseRouting();
         app.UseCors("CorsPolicy");
 
@@ -75,20 +83,17 @@ public class Startup
     {
         services.AddSingleton<IEventBus, RabbitMQEventBus>(S =>
         {
-            var queueName = _configuration["Rabbitmq:QueueName"];
+            var queueName = _configuration["Rabbitmq:SubscriptionClientName"];
             var persistanceConnection = S.GetRequiredService<IRabbitMQPersistentConnection>();
             var logger = S.GetRequiredService<ILogger<RabbitMQEventBus>>();
+            var iLifetimeScope = S.GetRequiredService<ILifetimeScope>();
             var subscriptionManager = S.GetRequiredService<IEventBusSubscriptionsManager>();
             var retryCount = 5;
-            return new RabbitMQEventBus(persistanceConnection, logger, subscriptionManager, queueName, retryCount);
+            return new RabbitMQEventBus(persistanceConnection, logger, subscriptionManager, iLifetimeScope, queueName, retryCount);
 
         });
 
         services.AddSingleton<IEventBusSubscriptionsManager, EventBusSubscriptionsManager>();
-    }
-    private void ConfigureEventBus(IApplicationBuilder app)
-    {
-        var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
     }
 
 }

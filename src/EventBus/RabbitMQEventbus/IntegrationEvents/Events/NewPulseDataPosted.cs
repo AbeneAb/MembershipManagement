@@ -7,6 +7,14 @@ public record NewPulseDataPosted : Event
     public uint Systolic { get; private init; }
     public uint Diastolic { get; private init; }
     public DateTime Time { get; private init; }
+    public NewPulseDataPosted(string deviceId, uint pulse, uint systolic, uint diastolic)
+    {
+        DeviceId = deviceId;
+        Pulse = pulse;
+        Systolic = systolic;
+        Diastolic = diastolic;
+        Time = DateTime.UtcNow;
+    }
 
 }
 

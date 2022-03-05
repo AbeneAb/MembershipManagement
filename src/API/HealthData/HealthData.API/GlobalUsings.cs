@@ -8,4 +8,5 @@ global using System.Net;
 global using HealthData.API.Infrastructure.Filter;
 global using RabbitMQ.Client;
 global using RabbitMQEventbus;
-global using HealthData.API.IntegrationEvents.Events;
+global using RabbitMQEventbus.IntegrationEvents.Events;
+global using HealthData.API.BackgroundTask;
