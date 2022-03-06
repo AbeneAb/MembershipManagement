@@ -27,7 +27,7 @@
 
         public async Task<IEnumerable<HealthInformation>> GetAll()
         {
-            var healthInformation = _membershipContext.HealthInformation.AsNoTracking().ToListAsync();
+            var healthInformation = _membershipContext.HealthInformation.OrderByDescending(x=>x.Time).AsNoTracking().Take(50).ToListAsync();
             return await healthInformation;
         }
 

@@ -16,7 +16,7 @@ function App() {
 		<Router>
 			<Switch>
 				<Route path="/" exact>
-					<Redirect to="/member" />
+					<Redirect to="/healthData" />
 				</Route>
 				<Route
 					path={['/member', '/transactions', '/healthData', '/lab', '/report']}>

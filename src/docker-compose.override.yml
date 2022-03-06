@@ -42,7 +42,7 @@ services:
   membership-spa:
     container_name: membership-spa
     ports:
-      - "3000:3000"
+      - "3000:80"
     depends_on:
       - membership.api
 
