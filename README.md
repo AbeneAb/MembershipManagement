@@ -5,8 +5,13 @@ Follow these steps to get your development environment set up: (Before Running S
 ```
 docker-compose -f docker-compose.yml -f docker-compose.override.yml up -d
 ```
-To run the front end change directory to test-managment-spa
+ You can use:
 
+* **HealthData.API -> http://host.docker.internal:8000/swagger/index.html**
+* **membershipData.API -> http://host.docker.internal:8000/swagger/index.html**
+* **Rabbit Management Dashboard -> http://host.docker.internal:15672**   -- guest/guest
+* **SQL Server -> http://host.docker.internal:5433**   --[UserName] => sa  [Password] => Thynk1234
+* **Health Data dashboard -> http://localhost:3000
 ```
 cd membership-spa
 npm install
