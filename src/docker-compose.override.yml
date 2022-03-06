@@ -40,12 +40,11 @@ services:
       - rabbitmq
 
   membership-spa:
-    volumes:
-      -'.:/app'
-      - 'app/node_modules'
+    container_name: membership-spa
+    ports:
+      - "3000:3000"
     depends_on:
       - membership.api
-
 
 
   rabbitmq:

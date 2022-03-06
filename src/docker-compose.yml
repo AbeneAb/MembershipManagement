@@ -17,5 +17,11 @@ services:
         context: .
         dockerfile: API/HealthData/HealthData.API/Dockerfile
 
+  membership-spa:
+    image: ${DOCKER_REGISTRY-}membership-spa
+    build:
+      context: .
+      dockerfile: membership-spa/Dockerfile
+
   rabbitmq:
     image: rabbitmq:3-management-alpine
